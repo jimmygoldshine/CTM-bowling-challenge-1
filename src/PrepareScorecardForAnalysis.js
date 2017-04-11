@@ -52,4 +52,5 @@ PrepareScorecardForAnalysis.prototype.prepare = function(){
   this.eleventhFrame = rawScorecard.split("||").pop();
   this.eleventhFrame = this.eleventhFrame.split("");
   this.translatedEleventhFrame = symbolsToNumbers(this.eleventhFrame);
+  return this
 }
