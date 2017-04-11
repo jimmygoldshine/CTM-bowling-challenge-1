@@ -5,11 +5,6 @@ describe("ScorecardAnalysis", function(){
     var scorecardArray = {scorecard: ["5","0","5","0","5","0","5","0","5","0"]}
     var scorecardAnalysis = new ScorecardAnalysis(scorecardArray);
 
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([5,0,5,0,5,0,5,0,5,0]);
-    })
-
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(25)
     })
@@ -19,11 +14,6 @@ describe("ScorecardAnalysis", function(){
 
     var scorecardArray = {scorecard: ["5","X","5","0","5","X","5","0","5","0"]}
     var scorecardAnalysis = new ScorecardAnalysis(scorecardArray);
-
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([5,10,5,0,5,10,5,0,5,0]);
-    })
 
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(55)
@@ -35,11 +25,6 @@ describe("ScorecardAnalysis", function(){
     var scorecardArray = {scorecard: ["5","/","5","0","5","/","5","0","5","0"]}
     var scorecardAnalysis = new ScorecardAnalysis(scorecardArray);
 
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([5,5,5,0,5,5,5,0,5,0]);
-    })
-
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(45)
     })
@@ -49,11 +34,6 @@ describe("ScorecardAnalysis", function(){
 
     var scorecardArray = {scorecard: ["X","7","/","9","-","X","-","8","8","/","-","6","X","X","9","-"]};
     var scorecardAnalysis = new ScorecardAnalysis(scorecardArray);
-
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([10,7,3,9,0,10,0,8,8,2,0,6,10,10,9,0])
-    })
 
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(147)
@@ -72,11 +52,6 @@ describe("ScorecardAnalysis", function(){
       expect(scorecardAnalysis.translatedBonus).toEqual(9)
     })
 
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([10,7,3,9,0,10,0,8,8,2,0,6,10,10,9,1])
-    })
-
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(158)
     })
@@ -92,11 +67,6 @@ describe("ScorecardAnalysis", function(){
     it("converts bonus to numbers", function(){
       scorecardAnalysis.bonusValue();
       expect(scorecardAnalysis.translatedBonus).toEqual(17)
-    })
-
-    it("converts symbols to numbers", function(){
-      scorecardAnalysis.symbolsToNumbers();
-      expect(scorecardAnalysis.translatedScorecard).toEqual([10,7,3,9,0,10,0,8,8,2,0,6,10,10,10])
     })
 
     it("adds up the correct scores", function(){
