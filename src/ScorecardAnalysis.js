@@ -1,77 +1,52 @@
 var ScorecardAnalysis = function(preparedArrayObject){
 
-  this.scorecard = preparedArrayObject.scorecard;
-  this.bonus = preparedArrayObject.bonus;
-  this.translatedScorecard = [];
-  this.translatedBonus = 0;
+  this.rawScorecard = preparedArrayObject.rawScorecard;
+  this.translatedScorecard = preparedArrayObject.translatedScorecard;
+  this.rawEleventhFrame = preparedArrayObject.rawEleventhFrame;
+  this.translatedEleventhFrame = preparedArrayObject.translatedEleventhFrame;
   this.score = 0;
 
-
-  _strikes = function(){
-    this.scorecard.includes("X")
-  }
-
-  _spares = function(){
-    this.scorecard.includes("/")
-  }
-
-  _symbolsToNumbers = function(rawScorecard){
-    var translatedOutput = rawScorecard.map(function(bowl, index){
-      switch(bowl) {
-        case "X": return 10
-  		    break;
-        case "-": return 0
-  		    break;
-        case "/": return (10 - parseInt(rawScorecard[index-1]));
-          break;
-        default: return parseInt(bowl)
-      }
-    })
-    return translatedOutput;
-  }
-
-  _sumOfFramesWithoutSpecials = function(translatedScorecard){
+  sumOfFramesWithoutSpecialsBonuses = function(translatedScorecard){
     var sum = translatedScorecard.reduce(function(a,b){
       return a + b;
     })
     return sum;
   }
+
+  sumOfSpecialsBonuses = function(rawScorecard, translatedScorecard){
+    var sum = 0;
+    for(i = 0; i < rawScorecard.length - 1; i++){
+      if(rawScorecard[i] === "X"){
+        if(i === translatedScorecard.length-2){
+          sum += (translatedScorecard[i+1])
+        } else {
+          sum += (translatedScorecard[i+1] + translatedScorecard[i+2]);
+        }
+      } else if (rawScorecard[i] === "/") {
+        sum += (translatedScorecard[i+1]);
+      }
+    }
+    return sum;
+  }
+
+  sumOfEleventhFrame = function(rawScorecard, translatedEleventhFrame){
+    var value = 0;
+    if(translatedEleventhFrame.length > 0){
+      if(translatedEleventhFrame.length < 2){
+        value += translatedEleventhFrame[0];
+      } else if (rawScorecard[rawScorecard.length-2] === "X"){
+        value += ((translatedEleventhFrame[0] * 2) + translatedEleventhFrame[1]);
+      } else {
+        value += (sumOfFramesWithoutSpecialsBonuses(translatedEleventhFrame));
+      }
+    }
+    return value;
+  };
 };
 
 ScorecardAnalysis.prototype.getScore = function(){
-  this.translatedScorecard = _symbolsToNumbers(this.scorecard);
-  this.score = _sumOfFramesWithoutSpecials(this.translatedScorecard);
-  if (_strikes) {
-    for(i = 0; i < this.translatedScorecard.length - 1; i++) {
-      if(this.translatedScorecard[i] === 10){
-        if(i === this.translatedScorecard.length-2){
-          this.score += (this.translatedScorecard[i+1])
-        } else {
-        this.score += (this.translatedScorecard[i+1] + this.translatedScorecard[i+2]);
-        }
-      }
-    }
-  }
-  if (_spares) {
-    for(i = 0; i < this.scorecard.length - 1; i++) {
-      if(this.scorecard[i] === "/"){
-        this.score += (this.translatedScorecard[i+1]);
-      }
-    }
-  }
-  return this.score + this.translatedBonus
-};
-
-ScorecardAnalysis.prototype.bonusValue = function(){
-  var value = 0;
-  var bonus = this.bonus
-  this.translatedBonus = _symbolsToNumbers(this.bonus);
-  if(this.translatedBonus.length < 2){
-    value += this.translatedBonus[0];
-  } else if (this.scorecard[this.scorecard.length-2] === "X"){
-    value += ((this.translatedBonus[0] * 2) + this.translatedBonus[1]);
-  } else {
-    value += (_sumOfFramesWithoutSpecials(this.translatedBonus));
-  }
-  this.translatedBonus = value;
+  this.score += sumOfFramesWithoutSpecialsBonuses(this.translatedScorecard);
+  this.score += sumOfSpecialsBonuses(this.rawScorecard, this.translatedScorecard);
+  this.score += sumOfEleventhFrame(this.rawScorecard, this.translatedEleventhFrame);
+  return this.score;
 };
