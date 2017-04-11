@@ -66,10 +66,12 @@ ScorecardAnalysis.prototype.bonusValue = function(){
   var value = 0;
   var bonus = this.bonus
   this.translatedBonus = _symbolsToNumbers(this.bonus);
-  if(this.translatedBonus.length === 1){
+  if(this.translatedBonus.length < 2){
     value += this.translatedBonus[0];
+  } else if (this.scorecard[this.scorecard.length-2] === "X"){
+    value += ((this.translatedBonus[0] * 2) + this.translatedBonus[1]);
   } else {
-    value += ((this.translatedBonus[0] * 2) + this.translatedBonus[1])
+    value += (_sumOfFramesWithoutSpecials(this.translatedBonus));
   }
   this.translatedBonus = value;
 };

@@ -57,7 +57,7 @@ describe("ScorecardAnalysis", function(){
     })
   })
 
-  describe("Bonus frame: two bowls", function(){
+  describe("Bonus frame: two bowls - Test1", function(){
 
     var scorecardArray = {scorecard: ["X","7","/","9","-","X","-","8","8","/","-","6","X","X","X"],
                           bonus: ["8","1"]
@@ -71,6 +71,23 @@ describe("ScorecardAnalysis", function(){
 
     it("adds up the correct scores", function(){
       expect(scorecardAnalysis.getScore()).toEqual(167)
+    })
+  })
+
+  describe("Bonus frame: two bowls - test2", function(){
+
+    var scorecardArray = {scorecard: ["6","3","4","/","8","/","4","1","6","3","X","8","1","-","3","-","7","X"],
+                          bonus: ["6","3"]
+                          };
+    var scorecardAnalysis = new ScorecardAnalysis(scorecardArray);
+
+    it("converts bonus to numbers", function(){
+      scorecardAnalysis.bonusValue();
+      expect(scorecardAnalysis.translatedBonus).toEqual(9)
+    })
+
+    it("adds up the correct scores", function(){
+      expect(scorecardAnalysis.getScore()).toEqual(112)
     })
   })
 })
