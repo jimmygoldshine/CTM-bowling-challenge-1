@@ -5,11 +5,11 @@ var PrepareScorecardForAnalysis = function(input){
   this.rawEleventhFrame = [];
   this.translatedEleventhFrame = [];
 
-  isElementAPipe = function(element){
+  this.isElementAPipe = function(element){
     return element != "|";
   };
 
-  symbolsToNumbers = function(rawScorecard){
+  this.symbolsToNumbers = function(rawScorecard){
     var translatedOutput = rawScorecard.map(function(bowl, index){
       switch(bowl) {
         case "X": return 10
@@ -24,7 +24,7 @@ var PrepareScorecardForAnalysis = function(input){
     return translatedOutput;
   }
 
-  eleventhFrameCheck = function(rawScorecard, eleventhFrame){
+  this.eleventhFrameCheck = function(rawScorecard, eleventhFrame){
     if(eleventhFrame) {
       eleventhFrame = gameArray[1];
       eleventhFrameArray.pop().split("");
@@ -33,24 +33,24 @@ var PrepareScorecardForAnalysis = function(input){
     return eleventhFrame;
   };
 
-  toArrayOfChars = function(rawScorecard){
+  this.toArrayOfChars = function(rawScorecard){
     var gameArray = rawScorecard.split("||");
     rawScorecard = gameArray[0];
     return rawScorecard.split("");
   };
 
-  removePipeElements = function(rawScorecard){
-    return rawScorecard.filter(isElementAPipe);
+  this.removePipeElements = function(rawScorecard){
+    return rawScorecard.filter(this.isElementAPipe);
   }
 };
 
 PrepareScorecardForAnalysis.prototype.prepare = function(){
   var rawScorecard = this.rawScorecard;
-  this.rawScorecard = removePipeElements(toArrayOfChars(this.rawScorecard));
+  this.rawScorecard = this.removePipeElements(this.toArrayOfChars(this.rawScorecard));
   this.translatedScorecard = rawScorecard.split("||")[0];
-  this.translatedScorecard = symbolsToNumbers(this.rawScorecard);
+  this.translatedScorecard = this.symbolsToNumbers(this.rawScorecard);
   this.eleventhFrame = rawScorecard.split("||").pop();
   this.eleventhFrame = this.eleventhFrame.split("");
-  this.translatedEleventhFrame = symbolsToNumbers(this.eleventhFrame);
+  this.translatedEleventhFrame = this.symbolsToNumbers(this.eleventhFrame);
   return this
 }

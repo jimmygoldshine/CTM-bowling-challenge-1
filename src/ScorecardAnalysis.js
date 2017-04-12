@@ -6,14 +6,14 @@ var ScorecardAnalysis = function(preparedArrayObject){
   this.translatedEleventhFrame = preparedArrayObject.translatedEleventhFrame;
   this.score = 0;
 
-  sumOfFramesWithoutSpecialsBonuses = function(translatedScorecard){
+  this.sumOfFramesWithoutSpecialsBonuses = function(translatedScorecard){
     var sum = translatedScorecard.reduce(function(a,b){
       return a + b;
     })
     return sum;
   }
 
-  sumOfSpecialsBonuses = function(rawScorecard, translatedScorecard){
+  this.sumOfSpecialsBonuses = function(rawScorecard, translatedScorecard){
     var sum = 0;
     for(i = 0; i < rawScorecard.length - 1; i++){
       if(rawScorecard[i] === "X"){
@@ -29,7 +29,7 @@ var ScorecardAnalysis = function(preparedArrayObject){
     return sum;
   }
 
-  sumOfEleventhFrame = function(rawScorecard, translatedEleventhFrame){
+  this.sumOfEleventhFrame = function(rawScorecard, translatedEleventhFrame){
     var value = 0;
     if(translatedEleventhFrame.length > 0){
       if(translatedEleventhFrame.length < 2){
@@ -37,7 +37,7 @@ var ScorecardAnalysis = function(preparedArrayObject){
       } else if (rawScorecard[rawScorecard.length-2] === "X"){
         value += ((translatedEleventhFrame[0] * 2) + translatedEleventhFrame[1]);
       } else {
-        value += (sumOfFramesWithoutSpecialsBonuses(translatedEleventhFrame));
+        value += (this.sumOfFramesWithoutSpecialsBonuses(translatedEleventhFrame));
       }
     }
     return value;
@@ -45,8 +45,8 @@ var ScorecardAnalysis = function(preparedArrayObject){
 };
 
 ScorecardAnalysis.prototype.getScore = function(){
-  this.score += sumOfFramesWithoutSpecialsBonuses(this.translatedScorecard);
-  this.score += sumOfSpecialsBonuses(this.rawScorecard, this.translatedScorecard);
-  this.score += sumOfEleventhFrame(this.rawScorecard, this.translatedEleventhFrame);
+  this.score += this.sumOfFramesWithoutSpecialsBonuses(this.translatedScorecard);
+  this.score += this.sumOfSpecialsBonuses(this.rawScorecard, this.translatedScorecard);
+  this.score += this.sumOfEleventhFrame(this.rawScorecard, this.translatedEleventhFrame);
   return this.score;
 };
