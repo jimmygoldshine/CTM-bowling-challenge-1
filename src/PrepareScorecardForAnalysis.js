@@ -1,27 +1,56 @@
 var PrepareScorecardForAnalysis = function(input){
 
-  this.scorecard = input;
-  this.bonus;
+  this.rawScorecard = input;
+  this.translatedScorecard = [];
+  this.rawEleventhFrame = [];
+  this.translatedEleventhFrame = [];
 
-  _isElementAPipe = function(element){
+  this.isElementAPipe = function(element){
     return element != "|";
   };
 
-};
-
-PrepareScorecardForAnalysis.prototype.bonusCheck = function(){
-  var bonusArray = this.scorecard.split("||");
-  if(bonusArray[1]) {
-    this.bonus = bonusArray.pop();
-    this.bonus = this.bonus.split("")
+  this.symbolsToNumbers = function(rawScorecard){
+    var translatedOutput = rawScorecard.map(function(bowl, index){
+      switch(bowl) {
+        case "X": return 10
+  		    break;
+        case "-": return 0
+  		    break;
+        case "/": return (10 - parseInt(rawScorecard[index-1]));
+          break;
+        default: return parseInt(bowl)
+      }
+    })
+    return translatedOutput;
   }
-  this.scorecard = bonusArray[0]
+
+  this.eleventhFrameCheck = function(rawScorecard, eleventhFrame){
+    if(eleventhFrame) {
+      eleventhFrame = gameArray[1];
+      eleventhFrameArray.pop().split("");
+    }
+    rawScorecard = gameArray[0];
+    return eleventhFrame;
+  };
+
+  this.toArrayOfChars = function(rawScorecard){
+    var gameArray = rawScorecard.split("||");
+    rawScorecard = gameArray[0];
+    return rawScorecard.split("");
+  };
+
+  this.removePipeElements = function(rawScorecard){
+    return rawScorecard.filter(this.isElementAPipe);
+  }
 };
 
-PrepareScorecardForAnalysis.prototype.toArrayofChars = function(){
-  this.scorecard = this.scorecard.split("");
-};
-
-PrepareScorecardForAnalysis.prototype.removePipeElements = function(){
-  this.scorecard = this.scorecard.filter(_isElementAPipe);
-};
+PrepareScorecardForAnalysis.prototype.prepare = function(){
+  var rawScorecard = this.rawScorecard;
+  this.rawScorecard = this.removePipeElements(this.toArrayOfChars(this.rawScorecard));
+  this.translatedScorecard = rawScorecard.split("||")[0];
+  this.translatedScorecard = this.symbolsToNumbers(this.rawScorecard);
+  this.eleventhFrame = rawScorecard.split("||").pop();
+  this.eleventhFrame = this.eleventhFrame.split("");
+  this.translatedEleventhFrame = this.symbolsToNumbers(this.eleventhFrame);
+  return this
+}
