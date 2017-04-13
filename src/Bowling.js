@@ -1,8 +1,8 @@
-var Application = function(){
+var Bowling = function(){
 
 };
 
-Application.prototype.score = function(bowlingScorecard){
+Bowling.prototype.score = function(bowlingScorecard){
   var initialScorecard = new PrepareScorecardForAnalysis(bowlingScorecard);
   var preparedScorecard = initialScorecard.prepare();
   var analysis = new ScorecardAnalysis(preparedScorecard);
